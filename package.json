@@ -28,6 +28,7 @@
   "dependencies": {
     "async": "^2.1.4",
     "async-cache": "^1.1.0",
+    "debug": "^2.6.1",
     "in-publish": "^2.0.0",
     "lru-cache": "^4.0.2",
     "path-is-absolute": "^1.0.1",

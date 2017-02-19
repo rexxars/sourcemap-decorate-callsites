@@ -4,6 +4,8 @@ var path = require('path')
 var test = require('tape')
 var crashAndBurn = require('./fixtures/lib/crashAndBurn')
 var noSourcemap = require('./fixtures/noSourcemap')
+var missingSourcemap = require('./fixtures/missingSourcemap')
+var invalidSourcemap = require('./fixtures/invalidSourcemap')
 var callAtDepth = require('./fixtures/lib/util/callAtDepth')
 var errorCallsites = require('error-callsites')
 var decorateCallsites = require('../')
@@ -59,6 +61,20 @@ test('should decorate deep stacks (async)', function (t) {
   decorateCallsites(errorCallsites(error), function (err, decorated) {
     t.ifError(err, 'should not error')
     assertDeepCallsites(t, decorated)
+  })
+})
+
+test('files that refer to sourcemaps which do not exist silently falls back (sync)', function (t) {
+  var decorated = decorateCallsites(errorCallsites(missingSourcemap()))
+  t.notOk(decorated[0].sourceMap, 'does not contain sourcemap')
+  t.end()
+})
+
+test('files that refer to sourcemaps which do not exist silently falls back (async)', function (t) {
+  decorateCallsites(errorCallsites(missingSourcemap()), function (err, decorated) {
+    t.ifError(err, 'should not error')
+    t.notOk(decorated[0].sourceMap, 'does not contain sourcemap')
+    t.end()
   })
 })
 
