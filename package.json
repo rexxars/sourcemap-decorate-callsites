@@ -6,7 +6,8 @@
   "scripts": {
     "test": "tape test/test.js && standard",
     "prepublish": "in-publish && npm run build-fixtures || not-in-publish",
-    "build-fixtures": "babel test/fixtures/src -d test/fixtures/lib --source-maps"
+    "build-fixtures": "babel test/fixtures/src -d test/fixtures/lib --source-maps",
+    "build-inline-fixtures": "babel test/fixtures/src -d test/fixtures/lib-inline --source-maps inline"
   },
   "repository": {
     "type": "git",
@@ -44,7 +45,8 @@
   },
   "standard": {
     "ignore": [
-      "/test/fixtures/lib/"
+      "/test/fixtures/lib/",
+      "/test/fixtures/lib-inline/"
     ]
   }
 }
