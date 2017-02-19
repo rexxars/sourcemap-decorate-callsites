@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "tape test/test.js && standard",
-    "prepublish": "in-publish && npm run build-fixtures || not-in-publish",
+    "prepublish": "in-publish && npm run build && npm test || not-in-publish",
+    "build": "npm run build-fixtures && npm run build-inline-fixtures",
     "build-fixtures": "babel test/fixtures/src -d test/fixtures/lib --source-maps",
     "build-inline-fixtures": "babel test/fixtures/src -d test/fixtures/lib-inline --source-maps inline"
   },
