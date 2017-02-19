@@ -1,6 +1,6 @@
 # sourcemap-decorate-callsites
 
-[![Version npm](http://img.shields.io/npm/v/sourcemap-decorate-callsites.svg?style=flat-square)](http://browsenpm.org/package/sourcemap-decorate-callsites)[![Build Status](http://img.shields.io/travis/rexxars/sourcemap-decorate-callsites/master.svg?style=flat-square)](https://travis-ci.org/rexxars/sourcemap-decorate-callsites)[![Coverage Status](http://img.shields.io/codeclimate/coverage/github/rexxars/sourcemap-decorate-callsites.svg?style=flat-square)](https://codeclimate.com/github/rexxars/sourcemap-decorate-callsites)[![Code Climate](http://img.shields.io/codeclimate/github/rexxars/sourcemap-decorate-callsites.svg?style=flat-square)](https://codeclimate.com/github/rexxars/sourcemap-decorate-callsites/)
+[![Version npm](http://img.shields.io/npm/v/sourcemap-decorate-callsites.svg?style=flat-square)](http://browsenpm.org/package/sourcemap-decorate-callsites)[![Build Status](http://img.shields.io/travis/rexxars/sourcemap-decorate-callsites/master.svg?style=flat-square)](https://travis-ci.org/rexxars/sourcemap-decorate-callsites)
 
 Decorate callsites with methods that return the sourcemapped file/line/column locations.  
 Supports both file references and inline source maps.
