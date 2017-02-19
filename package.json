@@ -1,7 +1,7 @@
 {
   "name": "sourcemap-decorate-callsites",
   "version": "1.0.0",
-  "description": "Decorate callsites with methods that return the sourcemapped line/column locations",
+  "description": "Decorate callsites with methods that return the sourcemapped file/line/column locations",
   "main": "lib/index.js",
   "scripts": {
     "test": "tape test/test.js && standard",
