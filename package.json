@@ -1,0 +1,49 @@
+{
+  "name": "sourcemap-decorate-callsites",
+  "version": "1.0.0",
+  "description": "Decorate callsites with methods that return the sourcemapped line/column locations",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "tape test/test.js && standard",
+    "prepublish": "in-publish && npm run build-fixtures || not-in-publish",
+    "build-fixtures": "babel test/fixtures/src -d test/fixtures/lib --source-maps"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rexxars/sourcemap-decorate-callsites.git"
+  },
+  "keywords": [
+    "stacktrace",
+    "sourcemap",
+    "callsite",
+    "decorate",
+    "stack"
+  ],
+  "author": "Espen Hovlandsdal <espen@hovlandsdal.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rexxars/sourcemap-decorate-callsites/issues"
+  },
+  "homepage": "https://github.com/rexxars/sourcemap-decorate-callsites#readme",
+  "dependencies": {
+    "async": "^2.1.4",
+    "async-cache": "^1.1.0",
+    "error-callsites": "^1.0.1",
+    "in-publish": "^2.0.0",
+    "lru-cache": "^4.0.2",
+    "path-is-absolute": "^1.0.1",
+    "semver": "^5.3.0",
+    "source-map": "^0.5.6"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "standard": "^8.6.0",
+    "tape": "^4.6.3"
+  },
+  "standard": {
+    "ignore": [
+      "/test/fixtures/lib/"
+    ]
+  }
+}
