@@ -4,6 +4,7 @@ var path = require('path')
 var test = require('tape')
 var crashAndBurn = require('./fixtures/lib/crashAndBurn')
 var inlineCrashAndBurn = require('./fixtures/lib-inline/crashAndBurn')
+var invalidInlineSourcemap = require('./fixtures/invalidInlineSourcemap')
 var noSourcemap = require('./fixtures/noSourcemap')
 var missingSourcemap = require('./fixtures/missingSourcemap')
 var invalidSourcemap = require('./fixtures/invalidSourcemap')
@@ -106,6 +107,20 @@ test('should decorate stacks if inline sourcemap can be resolved (async)', funct
   decorateCallsites(callsites, function (err, decorated) {
     t.ifError(err, 'should not error')
     assertFixtureCallsites(t, decorated)
+  })
+})
+
+test('files that has invalid inline sourcemaps silently falls back (sync)', function (t) {
+  var decorated = decorateCallsites(errorCallsites(invalidInlineSourcemap()))
+  t.notOk(decorated[0].sourceMap, 'does not contain sourcemap')
+  t.end()
+})
+
+test('files that has invalid inline sourcemaps silently falls back (async)', function (t) {
+  decorateCallsites(errorCallsites(invalidInlineSourcemap()), function (err, decorated) {
+    t.ifError(err, 'should not error')
+    t.notOk(decorated[0].sourceMap, 'does not contain sourcemap')
+    t.end()
   })
 })
 
