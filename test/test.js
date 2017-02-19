@@ -78,6 +78,20 @@ test('files that refer to sourcemaps which do not exist silently falls back (asy
   })
 })
 
+test('files that refer to sourcemaps which are invalid silently falls back (sync)', function (t) {
+  var decorated = decorateCallsites(errorCallsites(invalidSourcemap()))
+  t.notOk(decorated[0].sourceMap, 'does not contain sourcemap')
+  t.end()
+})
+
+test('files that refer to sourcemaps which are invalid silently falls back (async)', function (t) {
+  decorateCallsites(errorCallsites(invalidSourcemap()), function (err, decorated) {
+    t.ifError(err, 'should not error')
+    t.notOk(decorated[0].sourceMap, 'does not contain sourcemap')
+    t.end()
+  })
+})
+
 function extract (sourceMap) {
   return {
     fileName: sourceMap.getFileName(),
