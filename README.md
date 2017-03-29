@@ -40,13 +40,11 @@ someModule.doAsyncThing(function (err) {
 function printCallsites(err, callsites) {
   console.log('Error: %s', err.message)
   callsites.forEach(function (callsite) {
-    // sourceMap property is only available it a sourcemap can be resolved
-    var resolver = callsite.sourceMap || callsite
     console.log(
       '  in %s:%s:%s',
-      resolver.getFileName(),
-      resolver.getLineNumber(),
-      resolver.getColumnNumber()
+      callsite.getFileName(),
+      callsite.getLineNumber(),
+      callsite.getColumnNumber()
     )
   })
 }
@@ -59,7 +57,7 @@ function printCallsites(err, callsites) {
 * Source files are traversed, looking for references to a source map (`//# sourceMappingURL=some.js.map`)
 * The source map is read from filesystem (or parsed from base64 in the case of inline source maps)
 * A source map consumer is created using the [source-map](https://www.npmjs.com/package/source-map) module and cached in-memory
-* Each callsite with a valid source map is assigned a `sourceMap` property containing the following functions:
+* The following functions for each callsite are modified to return the information from the source map if available:
   - `getFileName()`
   - `getLineNumber()`
   - `getColumnNumber()`
@@ -67,7 +65,7 @@ function printCallsites(err, callsites) {
 
 ## Notes
 
-* Errors while reading the sourcemap is currently supressed. The `sourceMap` property will simply not be assigned in the case of errors. To debug why a sourcemap can't be resolved, you may pass `DEBUG=sourcemap-decorate-callsites` to your Node application, which will print debug info while resolving.
+* Errors while reading the sourcemap is currently supressed. The functions will simply not be modified in the case of errors. To debug why a sourcemap can't be resolved, you may pass `DEBUG=sourcemap-decorate-callsites` to your Node application, which will print debug info while resolving.
 
 ## License
 
