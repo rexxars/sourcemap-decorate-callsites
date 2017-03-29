@@ -18,15 +18,6 @@ var errorCallsites = require('error-callsites')
 var decorateCallsites = require('sourcemap-decorate-callsites')
 var someModule = require('some-module')
 
-// Syncronous API:
-try {
-  someModule.doSyncThing()
-} catch (err) {
-  var callsites = decorateCallsites(errorCallsites(err))
-  printCallsites(err, callsites)
-}
-
-// Asyncronous API:
 someModule.doAsyncThing(function (err) {
   if (!err) {
     return console.log('yaywin')
@@ -65,7 +56,7 @@ function printCallsites(err, callsites) {
 
 ## Notes
 
-* Errors while reading the sourcemap is currently supressed. The functions will simply not be modified in the case of errors. To debug why a sourcemap can't be resolved, you may pass `DEBUG=sourcemap-decorate-callsites` to your Node application, which will print debug info while resolving.
+* To debug why a sourcemap can't be resolved or results in an error, you may pass `DEBUG=sourcemap-decorate-callsites` to your Node application, which will print debug info while resolving.
 
 ## License
 

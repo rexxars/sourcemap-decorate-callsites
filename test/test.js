@@ -14,14 +14,7 @@ var decorateCallsites = require('../')
 
 var FIXTURES_DIR = path.join(__dirname, 'fixtures')
 
-test('should decorate stacks if sourcemap can be resolved (sync)', function (t) {
-  var error = crashAndBurn('FOO')
-  var callsites = errorCallsites(error)
-  var decorated = decorateCallsites(callsites)
-  assertFixtureCallsites(t, decorated)
-})
-
-test('should decorate stacks if sourcemap can be resolved (async)', function (t) {
+test('should decorate stacks if sourcemap can be resolved', function (t) {
   var error = crashAndBurn('FOO')
   var callsites = errorCallsites(error)
   decorateCallsites(callsites, function (err, decorated) {
@@ -30,17 +23,7 @@ test('should decorate stacks if sourcemap can be resolved (async)', function (t)
   })
 })
 
-test('should not decorate stacks with no sourcemap (sync)', function (t) {
-  var decorated = decorateCallsites(errorCallsites(noSourcemap()))
-  var hasSourceMap = decorated.filter(function (callsite) {
-    return callsite.sourceMap
-  })
-
-  t.equal(hasSourceMap.length, 0, 'callsites do not have sourcemap')
-  t.end()
-})
-
-test('should not decorate stacks with no sourcemap (async)', function (t) {
+test('should not decorate stacks with no sourcemap', function (t) {
   decorateCallsites(errorCallsites(noSourcemap()), function (err, decorated) {
     t.ifError(err, 'should not error')
     var hasSourceMap = decorated.filter(function (callsite) {
@@ -52,13 +35,7 @@ test('should not decorate stacks with no sourcemap (async)', function (t) {
   })
 })
 
-test('should decorate deep stacks (sync)', function (t) {
-  var error = callAtDepth(8, crashAndBurn)
-  var decorated = decorateCallsites(errorCallsites(error))
-  assertDeepCallsites(t, decorated)
-})
-
-test('should decorate deep stacks (async)', function (t) {
+test('should decorate deep stacks', function (t) {
   var error = callAtDepth(8, crashAndBurn)
   decorateCallsites(errorCallsites(error), function (err, decorated) {
     t.ifError(err, 'should not error')
@@ -66,42 +43,21 @@ test('should decorate deep stacks (async)', function (t) {
   })
 })
 
-test('files that refer to sourcemaps which do not exist silently falls back (sync)', function (t) {
-  var decorated = decorateCallsites(errorCallsites(missingSourcemap()))
-  t.notOk(decorated[0].sourceMap, 'does not contain sourcemap')
-  t.end()
-})
-
-test('files that refer to sourcemaps which do not exist silently falls back (async)', function (t) {
+test('files that refer to sourcemaps which do not exist throws error', function (t) {
   decorateCallsites(errorCallsites(missingSourcemap()), function (err, decorated) {
-    t.ifError(err, 'should not error')
-    t.notOk(decorated[0].sourceMap, 'does not contain sourcemap')
+    t.equal(err && err.code, 'ENOENT', 'should error with ENOENT')
     t.end()
   })
 })
 
-test('files that refer to sourcemaps which are invalid silently falls back (sync)', function (t) {
-  var decorated = decorateCallsites(errorCallsites(invalidSourcemap()))
-  t.notOk(decorated[0].sourceMap, 'does not contain sourcemap')
-  t.end()
-})
-
-test('files that refer to sourcemaps which are invalid silently falls back (async)', function (t) {
+test('files that refer to sourcemaps which are invalid throws error', function (t) {
   decorateCallsites(errorCallsites(invalidSourcemap()), function (err, decorated) {
-    t.ifError(err, 'should not error')
-    t.notOk(decorated[0].sourceMap, 'does not contain sourcemap')
+    t.ok(err instanceof SyntaxError, 'should error with syntax error')
     t.end()
   })
 })
 
-test('should decorate stacks if inline sourcemap can be resolved (sync)', function (t) {
-  var error = inlineCrashAndBurn('FOO')
-  var callsites = errorCallsites(error)
-  var decorated = decorateCallsites(callsites)
-  assertFixtureCallsites(t, decorated)
-})
-
-test('should decorate stacks if inline sourcemap can be resolved (async)', function (t) {
+test('should decorate stacks if inline sourcemap can be resolved', function (t) {
   var error = inlineCrashAndBurn('FOO')
   var callsites = errorCallsites(error)
   decorateCallsites(callsites, function (err, decorated) {
@@ -110,16 +66,9 @@ test('should decorate stacks if inline sourcemap can be resolved (async)', funct
   })
 })
 
-test('files that has invalid inline sourcemaps silently falls back (sync)', function (t) {
-  var decorated = decorateCallsites(errorCallsites(invalidInlineSourcemap()))
-  t.notOk(decorated[0].sourceMap, 'does not contain sourcemap')
-  t.end()
-})
-
-test('files that has invalid inline sourcemaps silently falls back (async)', function (t) {
+test('files that have invalid inline sourcemaps throws error', function (t) {
   decorateCallsites(errorCallsites(invalidInlineSourcemap()), function (err, decorated) {
-    t.ifError(err, 'should not error')
-    t.notOk(decorated[0].sourceMap, 'does not contain sourcemap')
+    t.ok(err instanceof SyntaxError, 'should error with syntax error')
     t.end()
   })
 })
